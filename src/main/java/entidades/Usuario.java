@@ -2,19 +2,18 @@ package entidades;
 
 public class Usuario {
 	private int idUsuario;
-	private String dni;
 	private String nombreUsuario;
 	private String password;
 	private String rol;
+	private String dni;
 	
-	
-	
-	public Usuario( String dni, String nombreUsuario, String password, String rol) {
-		this.dni = dni;
+	public Usuario(String nombreUsuario, String password, String rol, String dni) {
 		this.nombreUsuario = nombreUsuario;
 		this.password = password;
 		this.rol = rol;
+		this.dni = dni;
 	}
+
 	public int getIdUsuario() {
 		return idUsuario;
 	}
@@ -42,6 +41,12 @@ public class Usuario {
 	}
 	public void setRol(String rol) {
 		this.rol = rol;
+	}
+	
+	@Override
+	public String toString() {
+
+		return "Usuario id " + getIdUsuario() + " nombre de usuario " + getNombreUsuario() + " rol " + getRol()  + " DNI " + getDni();
 	}
 	
 }

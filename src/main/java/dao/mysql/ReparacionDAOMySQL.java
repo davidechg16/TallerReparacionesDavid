@@ -8,13 +8,25 @@ import entidades.Reparacion;
 public class ReparacionDAOMySQL implements ReparacionDAO {
 
 	@Override
-	public String estadoReparacion(Reparacion r) {
+	public int insert(Reparacion r) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
-	public Reparacion finbyidReparacion(int id) {
+	public int update(Reparacion r) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(Reparacion r) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Reparacion finbyVehiculoId(int vehiculoId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

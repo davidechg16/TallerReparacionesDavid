@@ -2,6 +2,7 @@ package dao.mysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
 			pst.setString(4, c.getTelefono());
 
 			resul = pst.executeUpdate();
-			System.out.println("Resultado de insercion: " + resul);
+			System.out.println("Resultado de insercción: " + resul);
 			
 		} catch (SQLException e) {
 			System.out.println("> NOK: " + e.getMessage());
@@ -49,24 +50,39 @@ public class ClienteDAOMySQL implements ClienteDAO {
 
 	@Override
 	public int update(Cliente c) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		
+		int resul = 0;
+		String sql = "UPDATE cliente SET nombre = ?, email = ?, telefono = ? WHERE dni = ?;";
+		try(PreparedStatement pst = conn.prepareStatement(sql)){
+			//SIN ACABAR
+			pst.setString(1, c.getNombre());
+			pst.setString(2, c.getEmail());
+			pst.setString(3, c.getTelefono());
+			pst.setString(4, c.getDni());
+			
+			resul = pst.executeUpdate();
+			System.out.println("Resultado update: " + resul);
+		} catch(SQLException e) {
+			System.out.println("> NOK: " + e.getMessage());
+		}
+		
+		return resul;
 	}
 
 	@Override
 	public void delete(Cliente c) {
-		///Esto es un copy paste de otro proyecto, personalizar para este
 		
-		String sqlDelete = "DELETE FROM usuario WHERE dni = ?;";
+		String sqlDelete = "DELETE FROM cliente WHERE dni = ?;";
 		try {
 			PreparedStatement pst = conn.prepareStatement(sqlDelete);
-			pst.setString(3, c.getDni()); // borrar por dni
+			pst.setString(1, c.getDni()); // borrar por dni
 			int filas = pst.executeUpdate();
 
-			if (filas > 0) {
-				System.out.println("> OK. Usuario con dni " + c.getDni() + "eliminado correctamente");
+			if (filas == 1) {
+				System.out.println("> OK. Cliente con dni " + c.getDni() + "eliminado correctamente");
 			} else {
-				System.out.println("> NO OK. Usuario con dni " + c.getDni() + " no se encuentra en la base de datos");
+				System.out.println("> NO OK. Cliente con dni " + c.getDni() + " no se encuentra en la base de datos");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -76,13 +92,37 @@ public class ClienteDAOMySQL implements ClienteDAO {
 
 	@Override
 	public ArrayList<Cliente> findall() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Cliente> clientes = new ArrayList<>();
+
+	    String sql = "SELECT * FROM cliente;";
+
+	    try {
+	        PreparedStatement pst = conn.prepareStatement(sql);
+	        ResultSet resul = pst.executeQuery();
+
+	        while (resul.next()) {
+	            Cliente c = new Cliente(
+	                resul.getString("nombre"),
+	                resul.getString("email"),
+	                resul.getString("dni"),
+	                resul.getString("telefono")
+	            ); 
+
+	            clientes.add(c);
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("> NOK: " + e.getMessage());
+	    }
+
+	    return clientes;
 	}
 
 	@Override
 	public Cliente findByDni(String dni) {
-		// TODO Auto-generated method stub
+		
+		String sql = "SELECT * FROM cliente WHERE dni = ?;";
+		
 		return null;
 	}
 

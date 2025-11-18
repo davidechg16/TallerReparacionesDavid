@@ -2,6 +2,7 @@ package dao.mysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import dao.interfaces.UsuarioDAO;
 import dwes.pruebamaven.mysql.PasswordUtils;
 import entidades.Usuario;
 
-public class UsuarioDAOMySQL implements dao.interfaces.UsuarioDAO {
+public class UsuarioDAOMySQL implements UsuarioDAO {
 	private Connection conn;
 	
 	public UsuarioDAOMySQL() {
@@ -21,14 +22,54 @@ public class UsuarioDAOMySQL implements dao.interfaces.UsuarioDAO {
 	
 	@Override
 	public boolean login(String dni, String password) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean usuarioRegistrado = false;
+        
+        String sql = "SELECT nombreUsuario, password, rol FROM usuario WHERE dni = ?;";
+        
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, dni);
+            //password = PasswordUtils.hashPassword(password);
+            //pst.setString(2, password);
+            
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                	// Rellenas el Usuario con los datos del SELECT *
+                    String passwordHashedDB = rs.getString("password");
+      
+                    // Comprobamos la contraseña recibida con el hash de la BD
+                    usuarioRegistrado = PasswordUtils.verifyPassword(password, passwordHashedDB);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("> NOK: " + e.getMessage());
+        }
+        
+        return usuarioRegistrado;
 	}
 
 	@Override
 	public int update(Usuario u) {
-		// TODO Auto-generated method stub
-		return 0;
+		int resul = 0;
+        String sql = "UPDATE usuario " + "SET nombreUsuario = ?, password = ?, rol = ?, dni = ? " + "WHERE dni = ?;";
+        
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, u.getNombreUsuario());
+            
+            // Volvemos a hashear la contraseña antes de guardarla
+            pst.setString(2, PasswordUtils.hashPassword(u.getPassword()));
+            
+            pst.setString(3, u.getRol());
+            pst.setString(4, u.getDni());   // nuevo dni (si quisieras cambiarlo)
+            pst.setString(5, u.getDni());   // dni actual (condición del WHERE)
+            
+            resul = pst.executeUpdate();
+            System.out.println("Resultado de update: " + resul);
+            
+        } catch (SQLException e) {
+            System.out.println("> NOK: " + e.getMessage());
+        }
+        
+        return resul;
 	}
 
 	@Override
@@ -87,8 +128,28 @@ public class UsuarioDAOMySQL implements dao.interfaces.UsuarioDAO {
 
 	@Override
 	public Usuario findByNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+		Usuario u = null;
+
+	    String sql = "SELECT nombreUsuario, password, rol, dni FROM usuario WHERE nombreUsuario = ?;";
+
+	    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+	        pst.setString(1, nombre);
+
+	        try (ResultSet rs = pst.executeQuery()) {
+	            if (rs.next()) {
+	                u = new Usuario(
+	                    rs.getString("nombreUsuario"),
+	                    rs.getString("password"),
+	                    rs.getString("rol"),
+	                    rs.getString("dni")
+	                );
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("> NOK: " + e.getMessage());
+	    }
+
+	    return u;
 	}
 
 

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import entidades.Reparacion;
 
 public interface ReparacionDAO {
-	String estadoReparacion (Reparacion r);
-	Reparacion finbyidReparacion (int id);
+	int insert(Reparacion r);
+	int update(Reparacion r);
+	int delete(Reparacion r);
+	Reparacion finbyVehiculoId(int vehiculoId);
 	ArrayList<Reparacion> findall();
 }
