@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import dao.DBConnection;
 import dao.interfaces.UsuarioDAO;
@@ -64,29 +65,35 @@ public class UsuarioDAOMySQL implements dao.interfaces.UsuarioDAO {
 	}
 
 	@Override
-	public int delete(Usuario u) {
-		//Esto es un copy paste de otro proyecto, personalizar para este
+	public void delete(Usuario u) {
 		
 		String sqlDelete = "DELETE FROM usuario WHERE id = ?;";
 		try {
 			PreparedStatement pst = conn.prepareStatement(sqlDelete);
-			pst.setInt(1, 1); // borrar por id
+			pst.setInt(1, u.getIdUsuario()); // borrar por id
 			int filas = pst.executeUpdate();
 
 			if (filas > 0) {
-				System.out.println("> OK. Usuario con id 1 eliminado correctamente");
+				System.out.println("> OK. Usuario con id " + u.getIdUsuario() + " eliminado correctamente");
 			} else {
-				System.out.println("> NO OK. Usuario con id 1 no se encuentra en la base de datos");
+				System.out.println("> NO OK. Usuario con id " + u.getIdUsuario() + " no se encuentra en la base de datos");
 			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 	@Override
 	public Usuario findByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public ArrayList<Usuario> findall() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,6 +1,8 @@
 package dao.interfaces;
 
 import java.util.ArrayList;
+
+import entidades.Usuario;
 import entidades.Vehiculo;
 
 public interface VehiculoDAO {

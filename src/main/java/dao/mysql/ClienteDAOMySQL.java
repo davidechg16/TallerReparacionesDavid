@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import dao.DBConnection;
 import dao.interfaces.ClienteDAO;
-import dwes.pruebamaven.mysql.PasswordUtils;
 import entidades.Cliente;
 
 public class ClienteDAOMySQL implements ClienteDAO {
@@ -19,7 +18,6 @@ public class ClienteDAOMySQL implements ClienteDAO {
 	@Override
 	public int insert(Cliente c) {
 		int resul = 0;
-	
 		
 		try {
 			// PreparedStatement
@@ -56,9 +54,24 @@ public class ClienteDAOMySQL implements ClienteDAO {
 	}
 
 	@Override
-	public int delete(String dni) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void delete(Cliente c) {
+		///Esto es un copy paste de otro proyecto, personalizar para este
+		
+		String sqlDelete = "DELETE FROM usuario WHERE dni = ?;";
+		try {
+			PreparedStatement pst = conn.prepareStatement(sqlDelete);
+			pst.setString(3, c.getDni()); // borrar por dni
+			int filas = pst.executeUpdate();
+
+			if (filas > 0) {
+				System.out.println("> OK. Usuario con dni " + c.getDni() + "eliminado correctamente");
+			} else {
+				System.out.println("> NO OK. Usuario con dni " + c.getDni() + " no se encuentra en la base de datos");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
