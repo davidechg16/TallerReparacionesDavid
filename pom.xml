@@ -5,11 +5,11 @@
   <version>0.0.1-SNAPSHOT</version>
     <name>TallerReparacionesDavid</name>
   
-<!--  <properties>-->
+<!--  <properties>   -->
 <!--    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
 <!--    <maven.compiler.source>8</maven.compiler.source>-->
 <!--    <maven.compiler.target>8</maven.compiler.target>-->
-<!--  </properties>-->
+<!--    </properties>-->
 
   <dependencies>
    <dependency>
@@ -20,7 +20,7 @@
     
     <dependency>
     <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
+    <artifactId>mysql-connector-java</artifactId> 
     <version>8.0.26</version>
 	</dependency>  
 
