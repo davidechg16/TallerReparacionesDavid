@@ -4,14 +4,17 @@ import java.time.LocalDate;
 
 public class Reparacion {
 	private int idReparacion;
-	private LocalDate fechaInicio;
+	private static int id = 0;
 	private String descripcion;
-	private int costeEstimado;
+	private LocalDate fechaEntrada;
+	private double costeEstimado;
 	private String estado;
 	
-	public Reparacion(LocalDate fechaInicio, String descripcion, int costeEstimado, String estado) {
-		this.fechaInicio = fechaInicio;
+	
+	public Reparacion(String descripcion, LocalDate fechaEntrada, double costeEstimado, String estado) {
+		this.idReparacion = id++;
 		this.descripcion = descripcion;
+		this.fechaEntrada = fechaEntrada;
 		this.costeEstimado = costeEstimado;
 		this.estado = estado;
 	}
@@ -20,12 +23,12 @@ public class Reparacion {
 		return idReparacion;
 	}
 
-	public LocalDate getFechaInicio() {
-		return fechaInicio;
+	public LocalDate getFechaEntrada() {
+		return fechaEntrada;
 	}
 
-	public void setFechaInicio(LocalDate fechaInicio) {
-		this.fechaInicio = fechaInicio;
+	public void setFechaEntrada(LocalDate fechaEntrada) {
+		this.fechaEntrada = fechaEntrada;
 	}
 
 	public String getDescripcion() {
@@ -36,11 +39,11 @@ public class Reparacion {
 		this.descripcion = descripcion;
 	}
 
-	public int getCosteEstimado() {
+	public double getCosteEstimado() {
 		return costeEstimado;
 	}
 
-	public void setCosteEstimado(int costeEstimado) {
+	public void setCosteEstimado(double costeEstimado) {
 		this.costeEstimado = costeEstimado;
 	}
 
@@ -50,7 +53,5 @@ public class Reparacion {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-	
-	
+	}	
 }

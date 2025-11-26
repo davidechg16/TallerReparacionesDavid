@@ -7,7 +7,7 @@ public interface UsuarioDAO {
 	boolean login(String dni, String password);
 	int update (Usuario u);
 	int insert(Usuario u);
-	void delete (Usuario u);
+	int delete (Usuario u);
 	Usuario findByNombre(String nombre);
 	ArrayList<Usuario> findall();
 	

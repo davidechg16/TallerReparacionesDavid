@@ -7,12 +7,8 @@ import entidades.Vehiculo;
 
 public interface VehiculoDAO {
 	int insert(Vehiculo v);
-	int update (Vehiculo v);
 	ArrayList<Vehiculo> findall();
-	
-	boolean borrarPorMatricula(String matricula);
+	int delete(Vehiculo v);
 	Vehiculo findByMatricula (String matricula);
-	
-	boolean borrarPorIdCliente(int idCliente);
-	Vehiculo findByIdCliente(int idCliente);
+
 }

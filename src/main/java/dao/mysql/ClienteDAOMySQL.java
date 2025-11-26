@@ -80,7 +80,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
 			int filas = pst.executeUpdate();
 
 			if (filas == 1) {
-				System.out.println("> OK. Cliente con dni " + c.getDni() + "eliminado correctamente");
+				System.out.println("> OK. Cliente con dni " + c.getDni() + " eliminado correctamente");
 			} else {
 				System.out.println("> NO OK. Cliente con dni " + c.getDni() + " no se encuentra en la base de datos");
 			}
@@ -122,8 +122,27 @@ public class ClienteDAOMySQL implements ClienteDAO {
 	public Cliente findByDni(String dni) {
 		
 		String sql = "SELECT * FROM cliente WHERE dni = ?;";
-		
-		return null;
+	    Cliente c = null;
+
+	    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+	        pst.setString(1, dni);
+
+	        ResultSet rs = pst.executeQuery();
+
+	        if (rs.next()) {
+	            c = new Cliente(
+	                rs.getString("nombre"),
+	                rs.getString("email"),
+	                rs.getString("dni"),
+	                rs.getString("telefono")
+	            );
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("> NOK: " + e.getMessage());
+	    }
+
+	    return c; // si no existe, devuelve null
 	}
 
 }
