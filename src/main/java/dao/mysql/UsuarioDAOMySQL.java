@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import dao.DBConnection;
 import dao.interfaces.UsuarioDAO;
 import dwes.pruebamaven.mysql.PasswordUtils;
+import entidades.Cliente;
 import entidades.Usuario;
 
 public class UsuarioDAOMySQL implements UsuarioDAO {
@@ -106,13 +107,14 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	}
 
 	@Override
-	public void delete(Usuario u) {
+	public int delete(Usuario u) {
 		
 		String sqlDelete = "DELETE FROM usuario WHERE id = ?;";
+		int filas = 0;
 		try {
 			PreparedStatement pst = conn.prepareStatement(sqlDelete);
 			pst.setInt(1, u.getIdUsuario()); // borrar por id
-			int filas = pst.executeUpdate();
+			filas = pst.executeUpdate();
 
 			if (filas > 0) {
 				System.out.println("> OK. Usuario con id " + u.getIdUsuario() + " eliminado correctamente");
@@ -124,6 +126,8 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return filas;
+		
 	}
 
 	@Override
@@ -155,8 +159,31 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 
 	@Override
 	public ArrayList<Usuario> findall() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		ArrayList<Usuario> usuarios = new ArrayList<>();
 
-}
+	    String sql = "SELECT * FROM usuario;";
+
+	    try {
+	        PreparedStatement pst = conn.prepareStatement(sql);
+	        ResultSet resul = pst.executeQuery();
+
+	        while (resul.next()) {
+	            Usuario u = new Usuario(
+	                resul.getString("nombreUsuario"),
+	                resul.getString("password"),
+	                resul.getString("rol"),
+	                resul.getString("dni")
+	            ); 
+
+	            usuarios.add(u);
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("> NOK: " + e.getMessage());
+	    }
+
+	    return usuarios;
+	}
+   }
+
+

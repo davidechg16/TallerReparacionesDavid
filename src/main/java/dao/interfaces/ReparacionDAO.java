@@ -8,6 +8,6 @@ public interface ReparacionDAO {
 	int insert(Reparacion r);
 	int update(Reparacion r);
 	int delete(Reparacion r);
-	Reparacion finbyVehiculoId(int vehiculoId);
+	Reparacion finbyIdVehiculo(int IdVehiculo);
 	ArrayList<Reparacion> findall();
 }
