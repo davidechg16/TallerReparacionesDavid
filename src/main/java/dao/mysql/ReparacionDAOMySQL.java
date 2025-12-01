@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 import dao.DBConnection;
 import dao.interfaces.ReparacionDAO;
-import dwes.pruebamaven.mysql.PasswordUtils;
 import entidades.Reparacion;
-import entidades.Vehiculo;
 
 public class ReparacionDAOMySQL implements ReparacionDAO {
 private Connection conn;
@@ -25,7 +23,7 @@ private Connection conn;
 		try {
 			
 			// Inserta una reparacion
-			String sql = "INSERT INTO reparacion (descripcion, fechaEntrada, costeEstimado, estado) VALUES(?, ?, ?, ?)";
+			String sql = "INSERT INTO reparacion (idReparacion, descripcion, fechaEntrada, costeEstimado, estado) VALUES(?, ?, ?, ?, ?)";
 			
 			// PreparedStatement
 			PreparedStatement pst = conn.prepareStatement(sql);
@@ -107,14 +105,14 @@ private Connection conn;
 	    try (PreparedStatement pst = conn.prepareStatement(sql)) {
 	        pst.setInt(1, idVehiculo);
 
-	        try (ResultSet rs = pst.executeQuery()) {
-	            if (rs.next()) {
+	        try (ResultSet resul = pst.executeQuery()) {
+	            if (resul.next()) {
 	                 	r = new Reparacion(
-	                	rs.getInt("idReparacion"),
-	                    rs.getString("descripcion"),
-	                    rs.getDate("fechaEntrada").toLocalDate(),
-	                    rs.getDouble("costeEstimado"),
-	                    rs.getString("estado")
+	                	resul.getInt("idReparacion"),
+	                    resul.getString("descripcion"),
+	                    resul.getDate("fechaEntrada").toLocalDate(),
+	                    resul.getDouble("costeEstimado"),
+	                    resul.getString("estado")
 	                );
 	            }
 	        }
@@ -136,6 +134,7 @@ private Connection conn;
 
 	        while (resul.next()) {
 	            Reparacion r = new Reparacion(
+	            	resul.getInt("idReparacion"),
 	                resul.getString("descripcion"),
 	                resul.getDate("fechaEntrada").toLocalDate(),
 	                resul.getDouble("costeEstimado"),
@@ -150,6 +149,37 @@ private Connection conn;
 	    }
 
 	    return reparaciones;
+	}
+	
+	@Override
+	public ArrayList<Reparacion> findByEstado(String estado) {
+		
+	    ArrayList<Reparacion> lista = new ArrayList<>();
+
+	    String sql = "SELECT idReparacion, descripcion, fechaEntrada, costeEstimado, estado "
+	               + "FROM reparacion WHERE estado = ? ORDER BY fechaEntrada;";
+
+	    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+	        pst.setString(1, estado);
+
+	        try (ResultSet resul = pst.executeQuery()) {
+	            while (resul.next()) {
+	                Reparacion r = new Reparacion(
+	                    resul.getInt("idReparacion"),
+	                    resul.getString("descripcion"),
+	                    resul.getDate("fechaEntrada").toLocalDate(),
+	                    resul.getDouble("costeEstimado"),
+	                    resul.getString("estado")
+	                );
+
+	                lista.add(r);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("> NOK: " + e.getMessage());
+	    }
+
+	    return lista;
 	}
 
 }

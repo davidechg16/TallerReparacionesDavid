@@ -22,15 +22,13 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	
 	
 	@Override
-	public boolean login(String dni, String password) {
+	public boolean login(String nombreUsuario, String password) {
 		boolean usuarioRegistrado = false;
         
-        String sql = "SELECT nombreUsuario, password, rol FROM usuario WHERE dni = ?;";
+        String sql = "SELECT nombreUsuario, password, rol FROM usuario WHERE nombreUsuario = ?;";
         
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setString(1, dni);
-            //password = PasswordUtils.hashPassword(password);
-            //pst.setString(2, password);
+            pst.setString(1, nombreUsuario);
             
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {

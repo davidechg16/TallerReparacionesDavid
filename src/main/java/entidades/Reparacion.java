@@ -18,6 +18,18 @@ public class Reparacion {
 		this.costeEstimado = costeEstimado;
 		this.estado = estado;
 	}
+	
+	
+	public Reparacion(int idReparacion, String descripcion, LocalDate fechaEntrada, double costeEstimado,
+			String estado) {
+		this.idReparacion = idReparacion;
+		this.descripcion = descripcion;
+		this.fechaEntrada = fechaEntrada;
+		this.costeEstimado = costeEstimado;
+		this.estado = estado;
+	}
+
+
 
 	public int getIdReparacion() {
 		return idReparacion;

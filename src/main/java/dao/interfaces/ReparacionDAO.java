@@ -10,4 +10,5 @@ public interface ReparacionDAO {
 	int delete(Reparacion r);
 	Reparacion finbyIdVehiculo(int IdVehiculo);
 	ArrayList<Reparacion> findall();
+	ArrayList<Reparacion> findByEstado(String estado);
 }
